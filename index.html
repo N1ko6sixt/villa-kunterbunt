@@ -3,32 +3,33 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Villa Kunterbunt – Family Hub</title>
 <style>
-:root{font-family:system-ui,Arial,sans-serif;color:#20362e;background:#f4f7f3}
+:root{font-family:system-ui,Arial,sans-serif;background:#f3f7f3;color:#20362e}
 *{box-sizing:border-box}
 body{margin:0}
-header{background:#172d27;color:white;padding:26px 18px;text-align:center}
+header{background:#183b2e;color:#fff;text-align:center;padding:28px 16px}
 header h1{margin:0}
-header p{color:#c5d8ce}
-main{max-width:760px;margin:auto;padding:18px}
-section{background:white;border:1px solid #e0e9e2;border-radius:18px;padding:20px;margin-bottom:16px}
+header p{margin-bottom:0;color:#d3e7d8}
+main{max-width:800px;margin:24px auto;padding:0 16px}
+section{background:white;border:1px solid #e0e8e0;border-radius:18px;padding:22px;margin-bottom:18px}
 h2{margin-top:0}
 label{display:block;font-weight:600;margin:12px 0 6px}
-input,textarea{width:100%;padding:12px;border:1px solid #cbd9cf;border-radius:10px;font:inherit}
-textarea{min-height:80px}
-button{background:#247e56;color:white;border:0;border-radius:10px;padding:12px 16px;font:inherit;font-weight:600;cursor:pointer;margin:8px 6px 8px 0}
-button.secondary{background:#e9f1eb;color:#225d42}
-button.danger{background:#fff1ee;color:#a33e2b}
-button:disabled{opacity:.5}
+input,textarea{width:100%;font:inherit;padding:12px;border:1px solid #c6d5ca;border-radius:10px}
+textarea{min-height:85px}
+button{font:inherit;font-weight:600;background:#237b54;color:#fff;border:0;border-radius:10px;padding:12px 15px;margin:10px 7px 0 0;cursor:pointer}
+button.secondary{background:#e9f1eb;color:#245a3e}
+button.danger{background:#fce8e5;color:#9b3529}
+button:disabled{opacity:.5;cursor:wait}
 .hidden{display:none!important}
-.muted{color:#687d71}
-.message{padding:12px;background:#eaf5ec;border-radius:10px;white-space:pre-wrap;margin-bottom:16px}
-.message.error{background:#fff0ec;color:#8f3526}
-.event{border-top:1px solid #e3eae5;padding:14px 0}
-.event p{margin:6px 0}
-footer{text-align:center;padding:20px;color:#778a7c}
+.muted{color:#697d70}
+.notice{padding:14px;border-radius:12px;background:#e8f4eb;white-space:pre-wrap;margin-bottom:18px}
+.notice.error{background:#fff0ed;color:#8f3328}
+.event{border-top:1px solid #e2eae3;padding:16px 0}
+.event p{margin:7px 0}
+footer{text-align:center;color:#708575;padding:22px}
+small{color:#607668}
 </style>
 </head>
 <body>
@@ -36,39 +37,51 @@ footer{text-align:center;padding:20px;color:#778a7c}
 <h1>🏡 Villa Kunterbunt</h1>
 <p>Unser gemeinsamer Familienkalender</p>
 </header>
-
 <main>
-<div id="msg" class="message hidden"></div>
+<div id="message" class="notice hidden" role="status"></div>
 
 <section id="loading">
 <h2>Villa Kunterbunt wird geladen …</h2>
-<p class="muted">Verbindung zur Familien-Datenbank wird hergestellt.</p>
+<p>Verbindung wird hergestellt.</p>
+</section>
+
+<section id="recovery" class="hidden">
+<h2>🔑 Neues Passwort festlegen</h2>
+<p>Gib dein neues Passwort zweimal ein. Es muss mindestens 8 Zeichen lang sein.</p>
+<form id="recoveryForm">
+<label for="newPassword">Neues Passwort</label>
+<input id="newPassword" type="password" autocomplete="new-password" minlength="8" required>
+<label for="confirmPassword">Passwort wiederholen</label>
+<input id="confirmPassword" type="password" autocomplete="new-password" minlength="8" required>
+<button id="savePassword" type="submit">Neues Passwort speichern</button>
+</form>
 </section>
 
 <section id="auth" class="hidden">
 <h2>🔐 Anmelden</h2>
-<p class="muted">Melde dich an oder erstelle dein eigenes Familienkonto.</p>
-<label>E-Mail-Adresse</label>
+<p class="muted">Melde dich an oder registriere ein eigenes Konto.</p>
+<label for="email">E-Mail-Adresse</label>
 <input id="email" type="email" autocomplete="email">
-<label>Passwort</label>
+<label for="password">Passwort</label>
 <input id="password" type="password" autocomplete="current-password">
 <button id="login">Anmelden</button>
 <button id="signup" class="secondary">Registrieren</button>
-<button id="reset" class="secondary">Passwort vergessen</button>
+<button id="forgot" class="secondary">Passwort vergessen</button>
 </section>
 
 <section id="home" class="hidden">
 <h2>Willkommen, <span id="who">Familie</span>!</h2>
-<p class="muted" id="account"></p>
+<p id="account" class="muted"></p>
 <button id="logout" class="secondary">Abmelden</button>
 
 <div id="familyCreate" class="hidden">
 <h3>Familie erstellen</h3>
-<label>Familienname</label>
+<p class="muted">Nur verwenden, wenn du noch keiner Familie angehörst.</p>
+<label for="familyName">Familienname</label>
 <input id="familyName" value="Villa Kunterbunt">
-<label>Dein Vorname</label>
-<input id="displayName" value="Niko">
-<button id="create">Familie erstellen</button>
+<label for="displayName">Dein Vorname</label>
+<input id="displayName" placeholder="Vorname">
+<button id="createFamily">Familie erstellen</button>
 </div>
 
 <div id="familyInfo" class="hidden">
@@ -78,11 +91,11 @@ footer{text-align:center;padding:20px;color:#778a7c}
 
 <section id="invitePanel" class="hidden">
 <h2>🔗 Familie einladen</h2>
-<p class="muted">Erstelle einen gemeinsamen Einladungslink für maximal 20 Personen. Der Link ist 48 Stunden gültig.</p>
+<p>Ein gemeinsamer Einladungslink, 48 Stunden gültig, maximal 20 Beitritte (gemäß deiner Datenbankfunktion).</p>
 <button id="makeInvite">Einladungslink erstellen</button>
 <button id="revokeInvites" class="secondary">Einladungen widerrufen</button>
 <div id="inviteResult" class="hidden">
-<label>Dein Einladungslink</label>
+<label for="inviteLink">Einladungslink</label>
 <input id="inviteLink" readonly>
 <button id="copyInvite">Link kopieren</button>
 <button id="shareInvite" class="secondary">Über WhatsApp teilen</button>
@@ -90,37 +103,31 @@ footer{text-align:center;padding:20px;color:#778a7c}
 </section>
 
 <section id="joinPanel" class="hidden">
-<h2>🏡 Villa Kunterbunt beitreten</h2>
-<p>Du wurdest eingeladen! Bitte melde dich zuerst an oder registriere dich.</p>
-<label>Dein Vorname</label>
-<input id="joinName" placeholder="Vorname">
+<h2>🏡 Familie beitreten</h2>
+<p>Du wurdest eingeladen. Bitte gib deinen Vornamen ein.</p>
+<label for="joinName">Vorname</label>
+<input id="joinName" maxlength="100">
 <button id="joinFamily">Einladung annehmen</button>
 </section>
 
 <section id="calendar" class="hidden">
 <h2>📅 Familientermine</h2>
 <form id="eventForm">
-<label>Termin</label>
-<input id="title" required maxlength="200">
-<label>Beginn</label>
-<input id="start" type="datetime-local" required>
-<label>Ende</label>
-<input id="end" type="datetime-local" required>
-<label>Beschreibung</label>
-<textarea id="description"></textarea>
+<label for="eventTitle">Titel</label>
+<input id="eventTitle" required maxlength="200">
+<label for="eventStart">Beginn</label>
+<input id="eventStart" type="datetime-local" required>
+<label for="eventEnd">Ende</label>
+<input id="eventEnd" type="datetime-local" required>
+<label for="eventDescription">Beschreibung</label>
+<textarea id="eventDescription"></textarea>
 <button id="saveEvent" type="submit">Termin speichern</button>
 <button id="cancelEdit" type="button" class="secondary hidden">Bearbeitung abbrechen</button>
 </form>
 <h2>Unsere Termine</h2>
 <div id="events">Termine werden geladen …</div>
 </section>
-
-<section>
-<h2>💬 WhatsApp-Erinnerungen</h2>
-<p class="muted">Termine können manuell über WhatsApp geteilt werden. Automatische Erinnerungen sind noch nicht eingerichtet.</p>
-</section>
 </main>
-
 <footer>Villa Kunterbunt · Family Hub</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
@@ -132,65 +139,90 @@ const PROJECT_URL='https://rubudzdoynyjtfdmskka.supabase.co';
 const PUBLIC_KEY='sb_publishable_-CFI2bzhgJx7mLpmx24Csg_w4PQi8uR';
 
 const $=id=>document.getElementById(id);
-const show=(id,visible)=>$(id).classList.toggle('hidden',!visible);
-
-let client=null;
-let user=null;
-let family=null;
-let editingId=null;
-
-const inviteToken=new URLSearchParams(location.search).get('invite');
+const show=(id,yes)=>$(id).classList.toggle('hidden',!yes);
+const query=new URLSearchParams(location.search);
+const inviteToken=query.get('invite');
+const recoveryHint=query.get('mode')==='reset'||query.get('type')==='recovery'||location.hash.includes('type=recovery');
+let client,user=null,family=null,editingId=null,recoveryMode=false;
 
 function notice(message,error=false){
-  $('msg').textContent=message;
-  $('msg').className='message'+(error?' error':'');
+  $('message').textContent=message;
+  $('message').className='notice'+(error?' error':'');
 }
-
-function errorMessage(error){
+function clearNotice(){
+  show('message',false);
+  $('message').textContent='';
+}
+function fail(error){
   notice(error?.message||String(error),true);
 }
-
-function busy(id,value){
-  $(id).disabled=value;
-}
-
-function dateFormat(value){
+function dateText(value){
   return new Intl.DateTimeFormat('de-DE',{
-    dateStyle:'medium',
-    timeStyle:'short'
+    dateStyle:'medium',timeStyle:'short'
   }).format(new Date(value));
 }
-
-function localDateTime(value){
-  const date=new Date(value);
-  const pad=n=>String(n).padStart(2,'0');
-  return date.getFullYear()+'-'+pad(date.getMonth()+1)+'-'+pad(date.getDate())+
-    'T'+pad(date.getHours())+':'+pad(date.getMinutes());
+function localTime(value){
+  const d=new Date(value),pad=n=>String(n).padStart(2,'0');
+  return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+
+    'T'+pad(d.getHours())+':'+pad(d.getMinutes());
+}
+function showRecovery(){
+  recoveryMode=true;
+  show('loading',false);
+  show('auth',false);
+  show('home',false);
+  show('familyCreate',false);
+  show('familyInfo',false);
+  show('invitePanel',false);
+  show('joinPanel',false);
+  show('calendar',false);
+  show('recovery',true);
 }
 
-async function initialize(){
+async function init(){
   try{
-    if(!window.supabase) throw Error('Supabase-Bibliothek konnte nicht geladen werden.');
+    if(!window.supabase)
+      throw Error('Supabase konnte nicht geladen werden. Prüfe deine Internetverbindung.');
 
     client=window.supabase.createClient(PROJECT_URL,PUBLIC_KEY);
 
-    const {data,error}=await client.auth.getUser();
-    if(error && error.name!=='AuthSessionMissingError') throw error;
+    client.auth.onAuthStateChange((event)=>{
+      if(event==='PASSWORD_RECOVERY')showRecovery();
+    });
 
+    const {data,error}=await client.auth.getSession();
+    if(error)throw error;
     show('loading',false);
 
-    if(data?.user){
-      await signedIn(data.user);
-    }else{
+    if(recoveryMode||recoveryHint){
+      if(data?.session){
+        showRecovery();
+        return;
+      }
+      await new Promise(resolve=>setTimeout(resolve,1000));
+      const result=await client.auth.getSession();
+      if(result.data?.session){
+        showRecovery();
+        return;
+      }
       show('auth',true);
+      notice('Der Passwort-Link ist ungültig oder abgelaufen. Bitte fordere einen neuen an.',true);
+      return;
     }
+
+    if(data?.session?.user)
+      await signedIn(data.session.user);
+    else
+      show('auth',true);
   }catch(e){
     show('loading',false);
-    errorMessage(e);
+    show('auth',true);
+    fail(e);
   }
 }
 
 async function signedIn(account){
+  if(recoveryMode)return;
   user=account;
   show('auth',false);
   show('home',true);
@@ -204,10 +236,7 @@ async function loadFamily(){
     .eq('user_id',user.id)
     .limit(1);
 
-  if(error){
-    errorMessage(error);
-    return;
-  }
+  if(error){fail(error);return;}
 
   if(!data?.length){
     family=null;
@@ -225,37 +254,30 @@ async function loadFamily(){
     name:member.families?.name||'Villa Kunterbunt'
   };
 
-  $('who').textContent=member.display_name;
+  $('who').textContent=member.display_name||'Familie';
   $('familyTitle').textContent=family.name;
-
   show('familyCreate',false);
   show('joinPanel',false);
   show('familyInfo',true);
   show('invitePanel',member.role==='owner');
   show('calendar',true);
-
   await loadEvents();
 }
 
 async function loadEvents(){
   if(!family)return;
-
   const {data,error}=await client.from('events')
     .select('id,title,description,starts_at,ends_at')
     .eq('family_id',family.id)
     .order('starts_at',{ascending:true})
-    .limit(100);
+    .limit(200);
 
-  if(error){
-    errorMessage(error);
-    return;
-  }
+  if(error){fail(error);return;}
 
-  const container=$('events');
-  container.replaceChildren();
-
+  const box=$('events');
+  box.replaceChildren();
   if(!data?.length){
-    container.textContent='Noch keine Termine vorhanden.';
+    box.textContent='Noch keine Termine vorhanden.';
     return;
   }
 
@@ -269,23 +291,24 @@ async function loadEvents(){
 
     const time=document.createElement('p');
     time.className='muted';
-    time.textContent=dateFormat(event.starts_at)+' – '+dateFormat(event.ends_at);
+    time.textContent=dateText(event.starts_at)+' – '+dateText(event.ends_at);
     item.append(time);
 
     if(event.description){
-      const description=document.createElement('p');
-      description.textContent=event.description;
-      item.append(description);
+      const desc=document.createElement('p');
+      desc.textContent=event.description;
+      item.append(desc);
     }
 
     const share=document.createElement('button');
     share.className='secondary';
     share.textContent='WhatsApp';
     share.onclick=()=>{
-      const message='📅 '+event.title+'\n'+dateFormat(event.starts_at)+
-        ' – '+dateFormat(event.ends_at)+
+      const message='📅 '+event.title+'\n'+dateText(event.starts_at)+
+        ' – '+dateText(event.ends_at)+
         (event.description?'\n'+event.description:'');
-      window.open('https://api.whatsapp.com/send?text='+encodeURIComponent(message),'_blank');
+      window.open('https://api.whatsapp.com/send?text='+
+        encodeURIComponent(message),'_blank','noopener');
     };
 
     const edit=document.createElement('button');
@@ -293,10 +316,10 @@ async function loadEvents(){
     edit.textContent='Bearbeiten';
     edit.onclick=()=>{
       editingId=event.id;
-      $('title').value=event.title;
-      $('description').value=event.description||'';
-      $('start').value=localDateTime(event.starts_at);
-      $('end').value=localDateTime(event.ends_at);
+      $('eventTitle').value=event.title;
+      $('eventStart').value=localTime(event.starts_at);
+      $('eventEnd').value=localTime(event.ends_at);
+      $('eventDescription').value=event.description||'';
       $('saveEvent').textContent='Änderungen speichern';
       show('cancelEdit',true);
       $('eventForm').scrollIntoView({behavior:'smooth'});
@@ -306,17 +329,20 @@ async function loadEvents(){
     del.className='danger';
     del.textContent='Löschen';
     del.onclick=async()=>{
-      if(!confirm('Termin wirklich für alle löschen?'))return;
-      const {error}=await client.from('events')
+      if(!confirm('Termin für alle löschen?'))return;
+      const {data:deleted,error}=await client.from('events')
         .delete()
         .eq('id',event.id)
-        .eq('family_id',family.id);
-      if(error)errorMessage(error);
+        .eq('family_id',family.id)
+        .select('id');
+      if(error)fail(error);
+      else if(!deleted?.length)
+        notice('Termin konnte nicht gelöscht werden. Bitte Berechtigungen prüfen.',true);
       else await loadEvents();
     };
 
     item.append(share,edit,del);
-    container.append(item);
+    box.append(item);
   }
 }
 
@@ -326,64 +352,58 @@ function resetEventForm(){
   $('saveEvent').textContent='Termin speichern';
   show('cancelEdit',false);
 }
-
 $('cancelEdit').onclick=resetEventForm;
 
-$('eventForm').onsubmit=async event=>{
-  event.preventDefault();
+$('eventForm').onsubmit=async e=>{
+  e.preventDefault();
   if(!family)return;
 
-  const start=new Date($('start').value);
-  const end=new Date($('end').value);
-
+  const start=new Date($('eventStart').value);
+  const end=new Date($('eventEnd').value);
   if(!(end>start)){
     notice('Das Ende muss nach dem Beginn liegen.',true);
     return;
   }
 
   const values={
-    title:$('title').value.trim(),
-    description:$('description').value.trim(),
+    title:$('eventTitle').value.trim(),
+    description:$('eventDescription').value.trim(),
     starts_at:start.toISOString(),
     ends_at:end.toISOString()
   };
 
-  busy('saveEvent',true);
+  $('saveEvent').disabled=true;
   try{
     let result;
-
     if(editingId){
       result=await client.from('events')
         .update(values)
         .eq('id',editingId)
         .eq('family_id',family.id)
         .select('id');
-      if(!result.error && !result.data?.length){
-        throw Error('Der Termin konnte nicht geändert werden. Bitte Zugriffsrechte prüfen.');
-      }
+      if(!result.error&&!result.data?.length)
+        throw Error('Termin konnte nicht geändert werden. Bitte Berechtigungen prüfen.');
     }else{
-      result=await client.from('events')
-        .insert({
-          ...values,
-          family_id:family.id,
-          created_by:user.id
-        });
+      result=await client.from('events').insert({
+        ...values,
+        family_id:family.id,
+        created_by:user.id
+      });
     }
-
     if(result.error)throw result.error;
-
     resetEventForm();
     notice('Termin gespeichert.');
     await loadEvents();
   }catch(e){
-    errorMessage(e);
+    fail(e);
   }finally{
-    busy('saveEvent',false);
+    $('saveEvent').disabled=false;
   }
 };
 
 $('login').onclick=async()=>{
-  busy('login',true);
+  clearNotice();
+  $('login').disabled=true;
   try{
     const {data,error}=await client.auth.signInWithPassword({
       email:$('email').value.trim(),
@@ -393,9 +413,9 @@ $('login').onclick=async()=>{
     await signedIn(data.user);
     notice('Erfolgreich angemeldet.');
   }catch(e){
-    errorMessage(e);
+    fail(e);
   }finally{
-    busy('login',false);
+    $('login').disabled=false;
   }
 };
 
@@ -405,33 +425,74 @@ $('signup').onclick=async()=>{
       email:$('email').value.trim(),
       password:$('password').value,
       options:{
-        emailRedirectTo:location.origin+location.pathname+location.search
+        emailRedirectTo:location.origin+location.pathname+
+          (inviteToken?'?invite='+encodeURIComponent(inviteToken):'')
       }
     });
     if(error)throw error;
-    notice('Registrierung angefragt. Bitte prüfe gegebenenfalls deine E-Mails und bestätige dein Konto.');
+    notice('Registrierung angefragt. Bitte prüfe deine E-Mails und bestätige dein Konto, falls erforderlich.');
   }catch(e){
-    errorMessage(e);
+    fail(e);
   }
 };
 
-$('reset').onclick=async()=>{
+$('forgot').onclick=async()=>{
   try{
     const email=$('email').value.trim();
     if(!email)throw Error('Bitte zuerst deine E-Mail-Adresse eingeben.');
-    const {error}=await client.auth.resetPasswordForEmail(email,{
-      redirectTo:location.origin+location.pathname
-    });
+
+    const redirectTo=location.origin+location.pathname+'?mode=reset';
+    const {error}=await client.auth.resetPasswordForEmail(email,{redirectTo});
     if(error)throw error;
-    notice('Falls die Adresse registriert ist, erhältst du eine E-Mail.');
+
+    notice('Wenn die Adresse registriert ist, erhältst du eine E-Mail. Öffne den Link daraus, um ein neues Passwort festzulegen.');
   }catch(e){
-    errorMessage(e);
+    fail(e);
+  }
+};
+
+$('recoveryForm').onsubmit=async e=>{
+  e.preventDefault();
+  const password=$('newPassword').value;
+  if(password.length<8){
+    notice('Bitte mindestens 8 Zeichen verwenden.',true);
+    return;
+  }
+  if(password!==$('confirmPassword').value){
+    notice('Die Passwörter stimmen nicht überein.',true);
+    return;
+  }
+
+  $('savePassword').disabled=true;
+  try{
+    const {error}=await client.auth.updateUser({password});
+    if(error)throw error;
+
+    recoveryMode=false;
+    show('recovery',false);
+    $('recoveryForm').reset();
+    history.replaceState(null,'',location.pathname);
+
+    const {error:signOutError}=await client.auth.signOut();
+    if(signOutError)throw signOutError;
+
+    user=null;
+    family=null;
+    show('home',false);
+    show('calendar',false);
+    show('invitePanel',false);
+    show('auth',true);
+    notice('Dein neues Passwort wurde gespeichert. Bitte melde dich jetzt damit an.');
+  }catch(e){
+    fail(e);
+  }finally{
+    $('savePassword').disabled=false;
   }
 };
 
 $('logout').onclick=async()=>{
   const {error}=await client.auth.signOut();
-  if(error){errorMessage(error);return;}
+  if(error){fail(error);return;}
   user=null;
   family=null;
   show('home',false);
@@ -442,8 +503,7 @@ $('logout').onclick=async()=>{
   notice('Abgemeldet.');
 };
 
-$('create').onclick=async()=>{
-  busy('create',true);
+$('createFamily').onclick=async()=>{
   try{
     const {error}=await client.rpc('create_family',{
       p_name:$('familyName').value.trim(),
@@ -453,36 +513,36 @@ $('create').onclick=async()=>{
     notice('Familie erstellt.');
     await loadFamily();
   }catch(e){
-    errorMessage(e);
-  }finally{
-    busy('create',false);
+    fail(e);
   }
 };
 
 $('makeInvite').onclick=async()=>{
   if(!family)return;
-  busy('makeInvite',true);
+  $('makeInvite').disabled=true;
   try{
     const {data,error}=await client.rpc('create_family_invite',{
       p_family_id:family.id
     });
     if(error)throw error;
 
+    const token=typeof data==='string'?data:data?.token||data?.invite_token;
+    if(!token)
+      throw Error('Die Einladungsfunktion hat keinen gültigen Token zurückgegeben.');
+
     $('inviteLink').value=location.origin+location.pathname+
-      '?invite='+encodeURIComponent(data);
+      '?invite='+encodeURIComponent(token);
     show('inviteResult',true);
-    notice('Einladungslink erstellt: 48 Stunden gültig, maximal 20 Beitritte.');
+    notice('Einladungslink erstellt.');
   }catch(e){
-    errorMessage(e);
+    fail(e);
   }finally{
-    busy('makeInvite',false);
+    $('makeInvite').disabled=false;
   }
 };
 
 $('revokeInvites').onclick=async()=>{
-  if(!family)return;
-  if(!confirm('Alle aktiven Einladungen widerrufen?'))return;
-
+  if(!family||!confirm('Alle aktiven Einladungen widerrufen?'))return;
   try{
     const {error}=await client.rpc('revoke_family_invites',{
       p_family_id:family.id
@@ -491,7 +551,7 @@ $('revokeInvites').onclick=async()=>{
     show('inviteResult',false);
     notice('Einladungen widerrufen.');
   }catch(e){
-    errorMessage(e);
+    fail(e);
   }
 };
 
@@ -500,19 +560,19 @@ $('copyInvite').onclick=async()=>{
     await navigator.clipboard.writeText($('inviteLink').value);
     notice('Einladungslink kopiert.');
   }catch(e){
-    errorMessage(e);
+    fail(e);
   }
 };
 
 $('shareInvite').onclick=()=>{
-  const message='Tritt unserer Familie Villa Kunterbunt bei: '+
-    $('inviteLink').value;
-  window.open('https://api.whatsapp.com/send?text='+
-    encodeURIComponent(message),'_blank');
+  window.open(
+    'https://api.whatsapp.com/send?text='+
+    encodeURIComponent('Tritt unserer Familie Villa Kunterbunt bei: '+$('inviteLink').value),
+    '_blank','noopener'
+  );
 };
 
 $('joinFamily').onclick=async()=>{
-  busy('joinFamily',true);
   try{
     if(!inviteToken)throw Error('Kein Einladungslink vorhanden.');
     const name=$('joinName').value.trim();
@@ -528,14 +588,11 @@ $('joinFamily').onclick=async()=>{
     notice('Willkommen bei Villa Kunterbunt!');
     await loadFamily();
   }catch(e){
-    errorMessage(e);
-  }finally{
-    busy('joinFamily',false);
+    fail(e);
   }
 };
 
-initialize();
-
+init();
 })();
 </script>
 </body>
